@@ -174,7 +174,7 @@ const DashboardLayout = () => {
               <span>
                 <FontAwesomeIcon icon={faSitemap} color="#6c757d" />
               </span>
-              <span> Give Subnets Information</span>
+              <span className='text-secondary'> Give Subnets Information</span>
             </h4>
             <Form className="dashboard-form">
               <FormGroup row>
@@ -183,7 +183,7 @@ const DashboardLayout = () => {
                 </Label>
                 <Col>
                   <Input
-                    className="bg-dark text-light dashboard-form-lan-inputField"
+                    className="bg-light text-light dashboard-form-lan-inputField"
                     type="text"
                     name="lanName"
                     placeholder="A LAN Name"
@@ -198,7 +198,7 @@ const DashboardLayout = () => {
                 </Label>
                 <Col>
                   <Input
-                    className="bg-dark text-light dashboard-form-lan-inputField"
+                    className="bg-light text-light dashboard-form-lan-inputField"
                     type="number"
                     name="hostNumber"
                     placeholder="15"
@@ -261,7 +261,7 @@ const DashboardLayout = () => {
                   <span>
                     <FontAwesomeIcon icon={faUpload} color="#6c757d" />
                   </span>
-                  <span> Upload GNS3 Topology</span>
+                  <span className="text-secondary"> Upload GNS3 Topology</span>
                 </h4>
                 <Form className="mb-5">
                   <FormGroup>
@@ -273,7 +273,7 @@ const DashboardLayout = () => {
                         onChange={fileBrowseHandler}
                       />
                       <label
-                        className="custom-file-label bg-dark text-light"
+                        className="custom-file-label bg-light text-light"
                         htmlFor="customFile"
                       >
                         {fileName}
@@ -305,7 +305,7 @@ const DashboardLayout = () => {
               <span>
                 <FontAwesomeIcon icon={faList} color="#6c757d" />
               </span>
-              <span> LAN Information</span>
+              <span className='text-secondary'> LAN Information</span>
             </h4>
             <Row>
               <Col className="mb-5">

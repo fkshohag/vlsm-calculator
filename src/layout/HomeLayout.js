@@ -81,20 +81,17 @@ const HomeLayout = (props) => {
   };
 
   const redirection = () => {
-    // if (validNetAddress && ispIP !== '' && ispSubnet !== '') {
-    //   return <Redirect to="/dashboard" />;
-    // } else {
     return (
       <div>
         <Container
           className="p-2 themed-container bg-secondary"
           fluid
         ></Container>
-        <Container className="themed-container homeContainer bg-dark" fluid>
+        <Container className="themed-container homeContainer bg-light" fluid>
           <Row>
             <Col md="6" className="offset-md-3">
               <Form className="homeContainer-form">
-                <h4 className="text-light bg-dark text-center">
+                <h4 className="text-light bg-light text-center">
                   ISP Provided Network Address in CIDR notation (a.b.c.d/mask)
                 </h4>
                 <FormGroup>
@@ -111,10 +108,9 @@ const HomeLayout = (props) => {
                 <Button
                   color="info"
                   block
-                  className="text-uppercase"
                   onClick={handleValidateGoButtonAction}
                 >
-                  Validate & GO
+                  Submit
                 </Button>
               </Form>
             </Col>

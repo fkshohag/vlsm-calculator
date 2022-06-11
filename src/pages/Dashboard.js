@@ -8,7 +8,7 @@ import '../main.css';
 
 const Dashboard = () => {
   return (
-    <div className="Dashboard bg-dark">
+    <div className="Dashboard bg-light">
       <NavBar />
       <DashboardLayout />
       <Footer />
