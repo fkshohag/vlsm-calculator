@@ -9,14 +9,10 @@ import {
 
 import { downloadFile } from '../utils/CSVFileMaker';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload } from '@fortawesome/free-solid-svg-icons';
-
 import '../main.css';
 
 const Subnets = (props) => {
   const ispBinaryIP = sessionStorage.getItem('ispBinaryIP');
-  const ispIP = sessionStorage.getItem('ispIP');
   const ispSubnet = sessionStorage.getItem('subnet');
 
   let lans = [...props.lans];
@@ -129,16 +125,6 @@ const Subnets = (props) => {
               </thead>
               <tbody>{props.isOpenSubnetsTable && renderTable()}</tbody>
             </Table>
-          </Col>
-        </Row>
-        <Row>
-          <Col md="6" className="offset-md-3 mb-5 mt-2">
-            <Button color="success" block onClick={makeCsvFile}>
-              <span>
-                <FontAwesomeIcon icon={faDownload} color="white" />
-              </span>
-              <span> Download as CSV</span>
-            </Button>
           </Col>
         </Row>
       </Container>

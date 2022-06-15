@@ -8,12 +8,10 @@ import {
   Form,
   FormGroup,
   Input,
-  Alert,
   Label,
   Table,
 } from 'reactstrap';
 
-import { uploadFile } from '../utils/GNS3Utility';
 import { notifySuccess, notifyWarning, notifyError } from '../utils/Notifier';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,7 +21,6 @@ import {
   faRedoAlt,
   faSitemap,
   faList,
-  faUpload,
 } from '@fortawesome/free-solid-svg-icons';
 
 import Subnets from '../components/Subnets';
@@ -31,7 +28,6 @@ import Subnets from '../components/Subnets';
 import '../main.css';
 
 const DashboardLayout = () => {
-  // const ispBinaryIP = sessionStorage.getItem('ispBinaryIP');
   const ispIP = sessionStorage.getItem('ispIP');
   const ispSubnet = sessionStorage.getItem('subnet');
 
@@ -39,14 +35,9 @@ const DashboardLayout = () => {
   const [hostNumber, setHostNumber] = useState('');
   const [lans, setLans] = useState([]);
 
-  const [file, setFile] = useState('');
-  const [fileName, setFileName] = useState('Chosse File');
-
   let availableSpace = Math.pow(2, 32 - ispSubnet);
 
   const [isOpenSubnetsTable, setIsOpenSubnetsTable] = useState(false);
-
-  // console.log(lanName, hostNumber);
 
   const getNormalizedLan = (id, name, hostNumber) => {
     return {
@@ -95,31 +86,6 @@ const DashboardLayout = () => {
     return sum;
   };
 
-  const fileBrowseHandler = (event) => {
-    setFile(event.target.files);
-    setFileName(event.target.files[0].name);
-  };
-
-  const fileUploadHandler = async () => {
-    const lanList = await uploadFile(file);
-
-    let tempLans = [];
-    for (let i = 0; i < lanList.length; i++) {
-      let lan = getNormalizedLan(i + 1, lanList[i].name, lanList[i].hostNumber);
-      tempLans.push(lan);
-    }
-    if (getTotalNetworkSize(tempLans) <= availableSpace) {
-      setLans(tempLans);
-      if (isOpenSubnetsTable) setIsOpenSubnetsTable(false);
-      notifySuccess('Successfully Uploaded.');
-    } else {
-      notifyWarning('Not enough space to apply VLSM!');
-    }
-    //console.log(file);
-  };
-
-  // console.log(lans);
-
   const renderTable = () => {
     const lanList = lans.map((lan) => {
       return (
@@ -142,8 +108,6 @@ const DashboardLayout = () => {
     event.preventDefault();
     clearForm();
     setLans([]);
-    setFile('');
-    setFileName('Choose File');
     setIsOpenSubnetsTable(false);
   };
 
@@ -153,7 +117,7 @@ const DashboardLayout = () => {
         <Row>
           <Col md="6" className="text-center">
             <h5>
-              <span className="text-warning">ISP IP Address:</span>{' '}
+              <span className="text-warning">IP Address:</span>{' '}
               <span className="text-light">
                 {ispIP}/{ispSubnet}
               </span>
@@ -161,7 +125,7 @@ const DashboardLayout = () => {
           </Col>
           <Col md="6" className="text-center">
             <h5>
-              <span className="text-warning">Available Space:</span>{' '}
+              <span className="text-warning">Accessible space:</span>{' '}
               <span className="text-light">{availableSpace}</span>
             </h5>
           </Col>
@@ -171,19 +135,16 @@ const DashboardLayout = () => {
         <Row>
           <Col md="6" className="text-light">
             <h4 className="mb-5">
-              <span>
-                <FontAwesomeIcon icon={faSitemap} color="#6c757d" />
-              </span>
-              <span className='text-secondary'> Give Subnets Information</span>
+              <span className='text-secondary'> Subnet Information</span>
             </h4>
             <Form className="dashboard-form">
               <FormGroup row>
                 <Label htmlFor="lanName" md={4} className="text-warning">
-                  <h5>LAN Name:</h5>
+                  <h5>Network Name:</h5>
                 </Label>
                 <Col>
                   <Input
-                    className="bg-light text-light dashboard-form-lan-inputField"
+                    className="bg-secondary text-light dashboard-form-lan-inputField"
                     type="text"
                     name="lanName"
                     placeholder="A LAN Name"
@@ -194,11 +155,11 @@ const DashboardLayout = () => {
               </FormGroup>
               <FormGroup row>
                 <Label htmlFor="hostNumber" md={4} className="text-warning">
-                  <h5>Number of Hosts:</h5>
+                  <h5>Hosts:</h5>
                 </Label>
                 <Col>
                   <Input
-                    className="bg-light text-light dashboard-form-lan-inputField"
+                    className="bg-secondary text-light dashboard-form-lan-inputField"
                     type="number"
                     name="hostNumber"
                     placeholder="15"
@@ -221,7 +182,7 @@ const DashboardLayout = () => {
                         <span>
                           <FontAwesomeIcon icon={faPlus} />
                         </span>
-                        <span> ADD</span>
+                        <span> Add</span>
                       </Button>
                     </Col>
                     <Col md="4">
@@ -234,7 +195,7 @@ const DashboardLayout = () => {
                         <span>
                           <FontAwesomeIcon icon={faTimes} />
                         </span>
-                        <span> CLEAR</span>
+                        <span> Clear</span>
                       </Button>
                     </Col>
                     <Col md="4">
@@ -247,72 +208,43 @@ const DashboardLayout = () => {
                         <span>
                           <FontAwesomeIcon icon={faRedoAlt} />
                         </span>
-                        <span> RESET</span>
+                        <span> Reset</span>
                       </Button>
                     </Col>
                   </Row>
                 </Col>
               </Row>
             </Form>
-
-            <Row>
-              <Col className="text-light">
-                <h4 className="mb-4 mt-5">
-                  <span>
-                    <FontAwesomeIcon icon={faUpload} color="#6c757d" />
-                  </span>
-                  <span className="text-secondary"> Upload GNS3 Topology</span>
-                </h4>
-                <Form className="mb-5">
-                  <FormGroup>
-                    <div className="custom-file">
-                      <input
-                        type="file"
-                        className="custom-file-input"
-                        id="customFile"
-                        onChange={fileBrowseHandler}
-                      />
-                      <label
-                        className="custom-file-label bg-light text-light"
-                        htmlFor="customFile"
-                      >
-                        {fileName}
-                      </label>
-                    </div>
-                  </FormGroup>
-                  <Row>
-                    {/* md="8" className="offset-md-2" */}
-                    <Col>
-                      <Button
-                        color="success"
-                        className="text-light"
-                        block
-                        onClick={fileUploadHandler}
-                      >
-                        <span>
-                          <FontAwesomeIcon icon={faUpload} color="white" />
-                        </span>
-                        <span> UPLOAD</span>
-                      </Button>
-                    </Col>
-                  </Row>
-                </Form>
-              </Col>
-            </Row>
+            <div className="mt-3">
+              <Row>
+                {/* md="6" className="offset-md-3" */}
+                <Col>
+                  <Link to="subnetAllocation" smooth={true} duration={1000}>
+                    <Button
+                      color="success"
+                      className="text-light"
+                      block
+                      onClick={() =>
+                        lans.length && setIsOpenSubnetsTable(true)
+                      }
+                    >
+                      <span> Calculate</span>
+                    </Button>
+                  </Link>
+                </Col>
+              </Row>
+            </div>
           </Col>
           <Col md="6" className="text-light text-center">
             <h4 className="mb-4">
-              <span>
-                <FontAwesomeIcon icon={faList} color="#6c757d" />
-              </span>
-              <span className='text-secondary'> LAN Information</span>
+              <span className='text-secondary'> Network Information</span>
             </h4>
             <Row>
               <Col className="mb-5">
                 <div className="lan-table">
-                  <h6 className="text-warning text-left">
+                  <h6 className="text-info text-left">
                     <em>
-                      *Router-to-Router total host number:{' '}
+                      Total host number:{' '}
                       {lans.length > 1
                         ? lans.length > 2
                           ? lans.length * 4
@@ -323,35 +255,13 @@ const DashboardLayout = () => {
                   <Table dark className="table-striped table-sm">
                     <thead>
                       <tr>
-                        <th>ID</th>
-                        <th>LAN Name</th>
-                        <th>Size</th>
+                        <th>Serial</th>
+                        <th>Network Name</th>
+                        <th>Host</th>
                       </tr>
                     </thead>
                     <tbody>{renderTable()}</tbody>
                   </Table>
-                </div>
-                <div className="mt-3">
-                  <Row>
-                    {/* md="6" className="offset-md-3" */}
-                    <Col>
-                      <Link to="subnetAllocation" smooth={true} duration={1000}>
-                        <Button
-                          color="success"
-                          className="text-light"
-                          block
-                          onClick={() =>
-                            lans.length && setIsOpenSubnetsTable(true)
-                          }
-                        >
-                          <span>
-                            <FontAwesomeIcon icon={faSitemap} color="white" />
-                          </span>
-                          <span> Calculate Subnet Allocation</span>
-                        </Button>
-                      </Link>
-                    </Col>
-                  </Row>
                 </div>
               </Col>
             </Row>
