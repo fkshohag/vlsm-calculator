@@ -19,8 +19,6 @@ import {
   faTimes,
   faPlus,
   faRedoAlt,
-  faSitemap,
-  faList,
 } from '@fortawesome/free-solid-svg-icons';
 
 import Subnets from '../components/Subnets';
