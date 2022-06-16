@@ -2,7 +2,7 @@
 
 VLSM or Variable Length Subnet Masking is a process of allocating subnet masks where the length is not restricted by IP classes. It allows subdividing a subnet for more optimal usage and less IP wastage.
 
-## App: [subnet-mask-calculator.netlify.app](https://subnet-mask-calculator.netlify.app/)
+## App: [VLSM-calculator](https://vlsm-calculator-7q299708i-fkshohag.vercel.app)
 
 ## Workflow:
 
